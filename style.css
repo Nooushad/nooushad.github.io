@@ -1,12 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
 * {
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: 'Gloria Hallelujah', cursive;
+  font-family: 'Satisfy', cursive;
   background: black;
   display: flex;
   justify-content: center;
