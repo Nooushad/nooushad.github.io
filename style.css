@@ -1,12 +1,12 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
 * {
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-family: 'Gloria Hallelujah', cursive;
   background: black;
   display: flex;
   justify-content: center;
