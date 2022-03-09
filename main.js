@@ -1,6 +1,8 @@
-document.addEventListener('click', function() {
-  document.querySelectorAll('css-doodle').forEach(function(o){ o.update() })
-})
-document.addEventListener('touchstart', function() {
-  document.querySelectorAll('css-doodle').forEach(function(o){ o.update() })
-})
+ onload = () => {
+
+            const c = setTimeout(() => {
+                document.body.classList.remove('not-loaded');
+                clearTimeout(c);
+            }, 1000);
+
+        }
