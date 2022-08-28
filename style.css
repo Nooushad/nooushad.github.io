@@ -1,54 +1,177 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap');
+:root {
+  --color-text: navy;
+  --color-bg: papayawhip;
+  --color-bg-accent: #ecdcc0;
+  --size: clamp(10rem, 1rem + 40vmin, 30rem);
+  --gap: calc(var(--size) / 14);
+  --duration: 60s;
+  --scroll-start: 0;
+  --scroll-end: calc(-100% - var(--gap));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: papayawhip;
+    --color-bg: navy;
+    --color-bg-accent: #2626a0;
+  }
+}
 
 * {
-	margin: 0;
-	padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-	font-family: "Work Sans", sans-serif;
-	letter-spacing: 2vmin;
-	background: black;
-	display: flex;	
-	height: 100vh;
-	width: 100vw;
-	align-items: center;
-	justify-content: center;
+  display: grid;
+  align-content: center;
+  overflow: hidden;
+  gap: var(--gap);
+  width: 100%;
+  min-height: 100vh;
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-bg);
 }
 
-h2 {
-	font-size: 15vmin;
-	position: absolute;
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  gap: var(--gap);
+  mask-image: linear-gradient(
+    var(--mask-direction, to right),
+    hsl(0 0% 0% / 0),
+    hsl(0 0% 0% / 1) 20%,
+    hsl(0 0% 0% / 1) 80%,
+    hsl(0 0% 0% / 0)
+  );
 }
 
-.border {
-	color: black;  
-  text-shadow:
-    -1px -1px 0 white, 
-    1px -1px 0 white,
-    -1px 1px 0 white,
-    1px 1px 0 white;  
+.marquee__group {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: var(--gap);
+  min-width: 100%;
+  animation: scroll-x var(--duration) linear infinite;
 }
 
-.wave {
-	color: white;
-	animation: wave 3s ease-in-out infinite;
+@media (prefers-reduced-motion: reduce) {
+  .marquee__group {
+    animation-play-state: paused;
+  }
 }
 
-.two {
-	transform: translateY(0.8em);
+.toggle:checked ~ .wrapper .marquee {
+  --mask-direction: to bottom;
 }
 
-.three {
-	transform: translateY(-0.8em);
+.toggle:checked ~ .wrapper .marquee,
+.toggle:checked ~ .wrapper .marquee .marquee__group {
+  flex-direction: column;
 }
 
-@keyframes wave {
-	0%, 100% {
-		clip-path: polygon(0% 47%, 10% 48%, 33% 54%, 54% 60%, 70% 61%, 84% 59%, 100% 52%, 100% 100%, 0% 100%);
-	}
+.toggle:checked ~ .wrapper .marquee .marquee__group {
+  animation-name: scroll-y;
+}
 
-	50% {
-		clip-path: polygon(0% 60%, 15% 65%, 34% 66%, 51% 62%, 67% 50%, 84% 45%, 100% 46%, 100% 100%, 0% 100%);
-	}
+.marquee--reverse .marquee__group {
+  animation-direction: reverse;
+  animation-delay: -3s;
+}
+
+@keyframes scroll-x {
+  from {
+    transform: translateX(var(--scroll-start));
+  }
+  to {
+    transform: translateX(var(--scroll-end));
+  }
+}
+
+@keyframes scroll-y {
+  from {
+    transform: translateY(var(--scroll-start));
+  }
+  to {
+    transform: translateY(var(--scroll-end));
+  }
+}
+
+/* Element styles */
+.marquee svg {
+  display: grid;
+  place-items: center;
+  width: var(--size);
+  fill: var(--color-text);
+  background: var(--color-bg-accent);
+  aspect-ratio: 16/9;
+  padding: calc(var(--size) / 10);
+  border-radius: 0.5rem;
+}
+
+.toggle:checked ~ .wrapper .marquee svg {
+  aspect-ratio: 1;
+  width: calc(var(--size) / 1.5);
+  padding: calc(var(--size) / 6);
+}
+
+/* Parent wrapper */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  margin: auto;
+  max-width: 100vw;
+}
+
+.toggle:checked ~ .wrapper {
+  flex-direction: row;
+  height: 100vh;
+}
+
+/* Toggle direction button */
+.toggle {
+  --size: 3rem;
+  appearance: none;
+  position: relative;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  width: var(--size);
+  height: var(--size);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  background-color: var(--color-bg-accent);
+  background-image: url('data:image/svg+xml;utf8,<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100.00026 43.01072"><path fill="white" d="M81.81888,1.38248c-2.95294-2.95312-8.00214-.86169-8.00214,3.31445V13.6929H26.18356V4.69693c0-4.17615-5.04907-6.26758-8.0022-3.31458L1.37302,18.19071c-1.83069,1.83069-1.83069,4.79846,0,6.62915l16.80835,16.80835c2.95294,2.953,8.00214,.86157,8.00214-3.31458v-8.99573h47.63324v8.99585c0,4.17615,5.04901,6.26758,8.00214,3.3147l16.80841-16.80847c1.83063-1.83057,1.83063-4.79834,0-6.62903L81.81888,1.38248Z"/></svg>');
+  background-size: 24px 24px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  transform-origin: right center;
+  z-index: 1;
+}
+
+.toggle:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-text);
+}
+
+.toggle:checked {
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+@keyframes fade {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
